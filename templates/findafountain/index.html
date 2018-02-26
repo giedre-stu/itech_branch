@@ -36,7 +36,7 @@
 
 			<div id="map"></div>
 			  <script type="text/javascript">
-			  	var map, infoWindow; 
+			  	var infoWindow; 
 
 			    var locations = [
 			      ['Main Building', 55.872084,  -4.288222, 1],
@@ -44,7 +44,7 @@
 			    ];
 
 			    function initMap() {
-			    	  map = new google.maps.Map(document.getElementById('map'), {
+			    	  var map = new google.maps.Map(document.getElementById('map'), {
 				      zoom: 16,
 				      center: new google.maps.LatLng(55.872084, -4.288222),
 				      mapTypeId: google.maps.MapTypeId.ROADMAP
