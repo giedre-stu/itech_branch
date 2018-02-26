@@ -1,0 +1,149 @@
+head {
+  position: relative;
+  padding-top: 0px;
+  margin: 0px;
+  border: 0px;
+}
+
+body, html {
+  padding: 0px;
+  margin: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+  background-color:#82CFFD;
+}
+
+footer{
+  bottom:0;
+}
+.grid{
+  display: grid;
+  grid-gap: 50px 100px;
+  grid-template-columns: auto auto auto;
+  padding:10px;
+  margin-top:50px;
+  text-align: center;
+}
+
+.gridtwo{
+  display: grid;
+  grid-gap: 50px 100px;
+  grid-template-columns: auto auto auto;
+  padding:10px;
+  margin-top:50px;
+  text-align: center;
+}
+
+.navbar {
+  padding:0px;
+  margin:0px;
+  font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 20px;   
+}
+
+.navbar-default{
+  color:#000;
+ font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 20px; 
+}
+
+
+.content{
+  height: 100%;
+}
+
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+
+.contact{
+  float:center;
+  text-align:center;
+  right:50%;
+  left:50%;
+  margin-top:0;
+  padding-top:0;
+}
+
+
+.left{
+  float:left;
+  text-align:center;
+  border: #ddd  1px solid;
+  border-color:#000;
+  background-color:#8292fd;
+
+}
+
+.right{
+  float:right;
+  padding:0px;
+  margin:0px;
+  border: #ddd  1px solid;
+  border-color:#000;
+  height:100%;
+  background-color:#8292fd;
+}
+
+.jumbotron{
+  top:0;
+  font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  line-height: 20px;  
+  width:100%;
+  margin-top:0px;
+  margin-bottom:0px;
+  margin-left:0px;
+  margin-right:0px;
+  padding-right:0px;
+  padding-left:0px;
+  padding-top:5px;
+  padding-bottom:5px;
+  text-align:center;
+  background-color:#82fdee;
+}
+.center2{
+  float: center;
+}
+
+.center{
+  float: center;
+  border: #ddd  1px solid;
+  border-color:#000;
+}
+
+.map{
+  float: center;
+  text-align:center;
+}
+
+.background { 
+  margin-top:38px;
+    /* The image used */
+    background-image: url("https://i.ytimg.com/vi/vMfbRAWxKig/hqdefault.jpg");
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .footer{
+    bottom:0;
+    position:absolute;
+  }

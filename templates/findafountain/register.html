@@ -1,0 +1,52 @@
+{% extends 'findafountain/base.html' %}
+{% load staticfiles %}
+
+{% block titleblock %}Register{% endblock %}
+
+{% block content %}
+<h1>Registration</h1>
+{% if registered %}
+	<b>Thank you for registering!</b>
+	<a href = "{% url 'index' %}">Return to home</a><br />
+{% else %}
+	<b>Register here</b>
+  <div id="my-signin2"></div>
+  <script>
+    function onSuccess(googleUser) {
+      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    }
+    function onFailure(error) {
+      console.log(error);
+    }
+    function renderButton() {
+      gapi.signin2.render('my-signin2', {
+        'scope': 'profile email',
+        'width': 240,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSuccess,
+        'onfailure': onFailure
+      });
+    }
+  </script>
+
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+	
+	
+	OR Use the Form:
+
+	<form id = "user_form" method="post" action="{% url 'register' %}"
+	enctype="multipart/form-data">
+
+	{% csrf_token %}
+
+<!-- Display each form -->
+ {{ user_form.as_p }}
+ {{ profile_form.as_p }}
+
+ <!-- Provide a button to click to submit the form. -->
+ <input type="submit" name="submit" value="Register" />
+ </form>
+ {% endif %}
+ {% endblock %}

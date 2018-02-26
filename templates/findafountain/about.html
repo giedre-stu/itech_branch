@@ -1,0 +1,37 @@
+{% extends 'findafountain/base.html' %}
+{% load staticfiles %}
+
+{% block titleblock %}About{% endblock %}
+{% block content %}
+
+<div class = "jumbotron">
+	<h1><b>About</b></h1>
+</div>
+
+<div class="body">
+	<center><b>Find a Fountain is a group project by the Thirsty Pythons for the Internet
+		Technology course at the University of Glasgow</b></center>
+
+	<center><p><h4><b>Thirsty Python Members</b></h4></p></center>
+	<div class = "grid">
+
+		<div class = "grid-item">
+			<b>Jemma</b>
+			<p><img src= "{% static 'img/fountain7.jpg' %}" alt="Image of a water fountain" height="300" width="500"/></p>
+		</div>
+	
+		<div class = "grid-item">
+			<b>Giedre</b>
+			<p><img src= "{% static 'img/fountain12.jpg' %}" alt="Image of a water fountain" height="300" width="500"/></p>
+		</div>
+		
+		<div class = "grid-item">
+			<b>Deb</b>
+			<p><img src= "{% static 'img/housesteads.png' %}" alt="Image of a water fountain" height="300" width="500"/></p>
+			<p>Interests in Roman Britain, Archaeology, Classics, UX/UI, </p>
+			<p>Cognitive Science, VR, and AR. Currently developing a multisensory experience in VR.</p>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
