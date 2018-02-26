@@ -1,111 +1,31 @@
-{% extends 'findafountain/base.html' %}
-{% load staticfiles %}
-
-{% block titleblock %}Home{% endblock %}
-
-{% block content %}
-
-<script src="http://maps.google.com/maps/api/js?sensor=false" 
-          type="text/javascript"></script>
-
-<style>
- #map {
-   width: 100%;
-   height: 500px;
- }
-</style>
-
-<div class = "jumbotron">
-	<h1><b>Home</b></h1>
-</div>
-
-<div class = "gridtwo">	
-	<div class = "left" style="width:400px">
-		<h4><b>Found a Fountain?</b></h4>
-		<b>Signup and submit via the <a href = "{% url 'contact' %}" > Submit </a> page.</b> </br>
-		<img src = "{% static 'img/libraryfountain.jpg' %}" alt = "Image of Library Fountain" style ="width:300px;height:400px;"><br />
-		<b>Fountain of the Week:</b>
-		Congratulations to the Library 4th floor fountain.
-		Voted: Most clean, Best stocked, and Easiest to Find
-	</div>
-
-	<div class = "center2">
-
-		<h4><b>The Thirsty Pythons are Proud to Announce:</b></h4>
-		<h2><b>Find a Fountain</b></h2>
-
-			<div id="map"></div>
-			  <script type="text/javascript">
-			  	var infoWindow; 
-
-			    var locations = [
-			      ['Main Building', 55.872084,  -4.288222, 1],
-			      ['Boyd Orr', 55.873504, -4.292795, 2]
-			    ];
-
-			    function initMap() {
-			    	  var map = new google.maps.Map(document.getElementById('map'), {
-				      zoom: 16,
-				      center: new google.maps.LatLng(55.872084, -4.288222),
-				      mapTypeId: google.maps.MapTypeId.ROADMAP
-			    	  });
-
-			    		infowindow = new google.maps.InfoWindow();
-
-				    // Try HTML5 geolocation.
-				        if (navigator.geolocation) {
-				          navigator.geolocation.getCurrentPosition(function(position) {
-				            var pos = {
-				              lat: position.coords.latitude,
-				              lng: position.coords.longitude
-				            };
-
-								infoWindow.setPosition(pos);
-					            infoWindow.setContent('Location found.');
-					            infoWindow.open(map);
-					            map.setCenter(pos);
-					          }, function() {
-					            handleLocationError(true, infoWindow, map.getCenter());
-					          });
-					        } else {
-					          // Browser doesn't support Geolocation
-					          handleLocationError(false, infoWindow, map.getCenter());
-					     }
-
-					    // adds markers to the map 
-					    var marker, i;
-					    for (i = 0; i < locations.length; i++) {  
-						      marker = new google.maps.Marker({
-						        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-						        map: map
-						      });
-
-						      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-						        return function() {
-						          infowindow.setContent(locations[i][0]);
-						          infowindow.open(map, marker);
-						        }
-						      })(marker, i));
-						    }
-					     }
-
-			   // if geolocation disabled 
-			  	function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-	        		infoWindow.setPosition(pos);
-	        		infoWindow.setContent(browserHasGeolocation ?
-	                              'Error: The Geolocation service failed.' :
-	                              'Error: Your browser doesn\'t support geolocation.');
-	       			infoWindow.open(map);
-      			}
-
-			  </script>
-
-	</div>
-
-	<div class="right">
-		<a class="twitter-timeline" data-width="300" data-height="600" href="https://twitter.com/fountain_finder?ref_src=twsrc%5Etfw">Tweets by fountain_finder</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-	</div>
-
-</div>
-
-{% endblock %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: -25.363, lng: 131.044};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    </script>
+  </body>
+</html>
