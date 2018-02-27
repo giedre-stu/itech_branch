@@ -154,7 +154,7 @@
 							  })(marker, i));
 							}
 
-					var end = 'Chicago, IL';
+					var end = new google.maps.LatLng(locations[0][1], locations[0][2]);
 					// current location to a fountain 
 					calcRoute(directionsService, directionsDisplay, customPosition, end);
 				} 
@@ -171,8 +171,8 @@
 				function calcRoute(directionsService, directionsDisplay, start, end) {
 
 					var request = {
-						origin: start, 
-						destination: end,
+						origin: new google.maps.LatLng(start),
+						destination: new google.maps.LatLng(end),
 						travelMode: 'WALKING'
 					};
 					
