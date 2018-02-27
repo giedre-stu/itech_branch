@@ -12,7 +12,6 @@
 	 #map {
 	   width: 100%;
 	   height: 500px;
-	   position: left;
 	 }
 
 	 #floating-panel {
@@ -45,7 +44,7 @@
 		float: right;
 		width: 200px;
 		height: 500px;
-		overflow: auto;
+		overflow: visible;
 	 }
 
 	 #map-panel {
@@ -84,7 +83,7 @@
 
 			<div id="map"></div>
 			  <script type="text/javascript">
-				var map, infoWindow, geoLocatorMarker, geoLocatorInfoWindow; 
+				var map, customPosition, infoWindow, geoLocatorMarker, geoLocatorInfoWindow; 
 
 				var locations = [
 				  ['Main Building', 55.872084,  -4.288222, 1],
@@ -108,19 +107,19 @@
 						// Try HTML5 geolocation.
 							if (navigator.geolocation) {
 								  navigator.geolocation.getCurrentPosition(function(position) {
-									var pos = {
+									customPosition = {
 									  lat: position.coords.latitude,
 									  lng: position.coords.longitude
 									};
 
 									geoLocatorMarker = new google.maps.Marker({
-									position: new google.maps.LatLng(pos),
+									position: new google.maps.LatLng(customPosition),
 									map: map,
 								  });
 									
 									geoLocatorInfoWindow.setContent('You are here');
 									geoLocatorInfoWindow.open(map, geoLocatorMarker);
-									map.setCenter(pos);
+									map.setCenter(customPosition);
 
 								}, function() {
 								handleLocationError(true, infoWindow, map.getCenter());
@@ -157,7 +156,7 @@
 							}
 
 					// current location to a fountain 
-					calcRoute(directionsService, directionsDisplay, pos, position);
+					calcRoute(directionsService, directionsDisplay, customPosition, position);
 				} 
 
 			   // if geolocation disabled 
