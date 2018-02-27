@@ -67,9 +67,9 @@
 						      });
 					            
 					            geoLocatorInfoWindow.setContent('You are here');
-					            geoLocatorInfoWindow.open(map, marker);
+					            geoLocatorInfoWindow.open(map, geoLocatorMarker);
 					            map.setCenter(pos);
-					            
+
 					        }, function() {
 	           				handleLocationError(true, infoWindow, map.getCenter());
 	          				});
