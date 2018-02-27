@@ -75,7 +75,8 @@
 					          });
 					        } else {
 					          // Browser doesn't support Geolocation
-					          handleLocationError(false, geoLocatorInfoWindow, map.getCenter());
+					           alert("Sorry, your browser does not support geolocation services.");
+					           handleLocationError(false, geoLocatorInfoWindow, map.getCenter());
 					    	}
 
 					    // adds markers to the map 
