@@ -168,13 +168,14 @@
 					geoLocatorInfoWindow.open(map);
 				}
 
-				function calcRoute(directionsService, directionsDisplay, cPosition, end) {
+				function calcRoute(directionsService, directionsDisplay, cPosition, cDestination) {
 
 					var start = cPosition;
-					
+					var end = cDestination;
+
 					var request = {
 						origin: new google.maps.LatLng(start),
-						destination: 'CHICAGO, IL',
+						destination: new google.maps.LatLng(55.872084, -4.288222),
 						travelMode: 'WALKING'
 					};
 					
@@ -182,7 +183,7 @@
 					if (status == 'OK') {
 					directionsDisplay.setDirections(result);
 					} else {
-					window.alert('Directions request failed due to ' + status);
+					directionsDisplay.setContent('Directions request failed due to ' + status);
 					}
 						});
 				}
