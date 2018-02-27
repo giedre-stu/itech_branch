@@ -41,7 +41,6 @@
 	 #right-panel {
 	    font-family: 'Roboto','sans-serif';
 	    line-height: 30px;
-	    padding-left: 10px;
 	    background-color: green;
 	    height: 100%;
         float: right;
@@ -165,8 +164,8 @@
 
       			function calcRoute(directionsService, directionsDisplay) {
       				directionsService.route({
-      					origin: new google.maps.LatLng(locations[1][1], locations[1][2]),
-					    destination: new google.maps.LatLng(locations[1][1], locations[1][2]),
+      					origin: 'chicago, il',
+					    destination: 'chicago, il',
 					    travelMode: google.maps.TravelMode['WALKING']
 					  },
 
