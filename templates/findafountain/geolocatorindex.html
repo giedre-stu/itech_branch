@@ -56,10 +56,21 @@
 				    // Try HTML5 geolocation.
 				        if (navigator.geolocation) {
 				          navigator.geolocation.getCurrentPosition(function(position) {
-				            var pos = {
-				              lat: position.coords.latitude,
-				              lng: position.coords.longitude
-				            };
+				            var lat = position.coords.latitude;
+				            var lng = position.coords.longitude;
+
+								var geolocationMarker; 
+
+								geolocationMarker = new google.maps.Marker({
+									position: new google.maps.LatLng(lat,lng),
+						        map: map });
+
+						        google.maps.event.addListener(geolocationMarker, 'click', (function(geolocationMarker, 1) {
+						        return function() {
+						          geoLocatorInfoWindow.setContent(locations[i][0]);
+						          geoLocatorInfoWindow.open(map, marker);
+						        }
+						        }
 
 								geoLocatorInfoWindow.setPosition(pos);
 					            geoLocatorInfoWindow.setContent('Location found.');
