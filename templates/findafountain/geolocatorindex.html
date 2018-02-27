@@ -51,30 +51,24 @@
 				      mapTypeId: google.maps.MapTypeId.ROADMAP
 			    	  });
 
-			    	geoLocatorInfoWindow = new google.maps.InfoWindow();
-
 				    // Try HTML5 geolocation.
 				        if (navigator.geolocation) {
 				          navigator.geolocation.getCurrentPosition(function(position) {
 				            var lat = position.coords.latitude;
 				            var lng = position.coords.longitude;
+				            var pos = {
+				              lat: position.coords.latitude,
+				              lng: position.coords.longitude
+				            };
 
-								var geolocationMarker; 
+				            var geolocationMarker = new google.maps.Marker({
+				            	position: new google.maps.LatLng(lat, lng), 
+				            	map: map
+				            });
 
-								geolocationMarker = new google.maps.Marker({
-									position: new google.maps.LatLng(lat,lng),
-						        map: map });
-
-						        google.maps.event.addListener(geolocationMarker, 'click', (function(geolocationMarker, 1) {
-						        return function() {
-						          geoLocatorInfoWindow.setContent(locations[i][0]);
-						          geoLocatorInfoWindow.open(map, marker);
-						        }
-						        }
-
-								geoLocatorInfoWindow.setPosition(pos);
-					            geoLocatorInfoWindow.setContent('Location found.');
-					            geoLocatorInfoWindow.open(map);
+								// geoLocatorInfoWindow.setPosition(pos);
+					           //  geoLocatorInfoWindow.setContent('Location found.');
+					           //  geoLocatorInfoWindow.open(map);
 					            map.setCenter(pos);
 					          }, function() {
 					            handleLocationError(true, geoLocatorInfoWindow, map.getCenter());
@@ -82,7 +76,7 @@
 					        } else {
 					          // Browser doesn't support Geolocation
 					          handleLocationError(false, geoLocatorInfoWindow, map.getCenter());
-					     }
+					    	}
 
 					    // adds markers to the map 
 					    var marker, i;
