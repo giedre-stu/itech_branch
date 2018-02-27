@@ -168,8 +168,10 @@
 					geoLocatorInfoWindow.open(map);
 				}
 
-				function calcRoute(directionsService, directionsDisplay, start, end) {
+				function calcRoute(directionsService, directionsDisplay, cPosition, end) {
 
+					var start = cPosition;
+					
 					var request = {
 						origin: new google.maps.LatLng(start),
 						destination: 'CHICAGO, IL',
