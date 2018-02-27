@@ -82,7 +82,7 @@
 
 			<div id="map"></div>
 			  <script type="text/javascript">
-				var map, customPosition, infoWindow, geoLocatorMarker, geoLocatorInfoWindow; 
+				var map, customPosition, infoWindow, geoLocatorMarker, geoLocatorInfoWindow;
 
 				var locations = [
 				  ['Main Building', 55.872084,  -4.288222, 1],
@@ -171,7 +171,7 @@
 				function calcRoute(directionsService, directionsDisplay, start, end) {
 
 					var request = {
-						origin: new google.maps.LatLng(start),
+						origin: 'CHICAGO, IL',
 						destination: new google.maps.LatLng(end),
 						travelMode: 'WALKING'
 					};
