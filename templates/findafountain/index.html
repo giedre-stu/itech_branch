@@ -50,7 +50,6 @@
 			    	var directionsService = new google.maps.DirectionsService();
  					var directionsDisplay = new google.maps.DirectionsRenderer();
 
-
 			    	  map = new google.maps.Map(document.getElementById('map'), {
 				      zoom: 16,
 				      center: new google.maps.LatLng(55.872084, -4.288222),
@@ -58,6 +57,7 @@
 			    	  });
 
 			    	  directionsDisplay.setMap(map);
+			    	  directionsDisplay.setPanel(document.getElementById('directionsPanel'));
 
 			    	  geoLocatorInfoWindow = new google.maps.InfoWindow;
 
@@ -121,16 +121,15 @@
 					  var end = document.getElementById('end').value;
 					  var request = {
 					    origin: pos,
-					    // gets lat & lang from the location list 
 					    destination: new google.maps.LatLng(locations[0][1], locations[0][2]),
-					    travelMode: 'WALKING'
+					    travelMode: google.maps.TravelMode['WALKING']
 					  };
 					  directionsService.route(request, function(result, status) {
 					    if (status == 'OK') {
 					      directionsDisplay.setDirections(result);
 					    }
 					  });
-					}
+				}
 
       			function markerSymbol(color) {
 				    return {
@@ -149,8 +148,9 @@
 			    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALaN1AQdFvEnlLyNLdHUmYKSjX5C82B4I&callback=initMap">
 			    </script>
 
+	<div id="directionsPanel" style="float:right;width:30%;height 100%"></div>
 	</div>
-
+	
 	<div class="right">
 		<a class="twitter-timeline" data-width="300" data-height="600" href="https://twitter.com/fountain_finder?ref_src=twsrc%5Etfw">Tweets by fountain_finder</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 	</div>
