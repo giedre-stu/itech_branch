@@ -40,7 +40,7 @@
 	 #right-panel {
 		font-family: 'Roboto','sans-serif';
 		line-height: 30px;
-		background-color: green;
+		background-color: white;
 		height: 100%;
 		float: right;
 		width: 200px;
@@ -75,7 +75,7 @@
 				<strong>End:</strong>
 			</div>
 
-			<div id="right-panel"></div>
+			<div id="right-panel">
 
 			<div id="map"></div>
 			  <script type="text/javascript">
@@ -151,7 +151,8 @@
 							  })(marker, i));
 							}
 
-					calcRoute(directionsService, directionsDisplay);
+					// current location to a fountain 
+					calcRoute(directionsService, directionsDisplay, pos, position);
 				} 
 
 			   // if geolocation disabled 
@@ -163,10 +164,7 @@
 					geoLocatorInfoWindow.open(map);
 				}
 
-				function calcRoute(directionsService, directionsDisplay) {
-
-					var start = 'Chicago, IL';
-					var end = 'Chicago, IL';
+				function calcRoute(directionsService, directionsDisplay, start, end) {
 
 					var request = {
 						origin: start, 
@@ -200,7 +198,7 @@
 				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALaN1AQdFvEnlLyNLdHUmYKSjX5C82B4I&callback=initMap">
 			 </script>
 
-	</div>
+	</div> </div>
 	
 	<div class="right">
 		<a class="twitter-timeline" data-width="300" data-height="600" href="https://twitter.com/fountain_finder?ref_src=twsrc%5Etfw">Tweets by fountain_finder</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
