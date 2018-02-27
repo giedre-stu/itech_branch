@@ -174,7 +174,7 @@
 					var end = cDestination;
 
 					var request = {
-						origin: new google.maps.LatLng(start),
+						origin: new google.maps.LatLng(55.872084, -4.288225),
 						destination: new google.maps.LatLng(55.872084, -4.288222),
 						travelMode: 'WALKING'
 					};
@@ -183,7 +183,7 @@
 					if (status == 'OK') {
 					directionsDisplay.setDirections(result);
 					} else {
-					directionsDisplay.setDirections('Directions request failed due to ' + status);
+					directionsDisplay.setContent('Directions request failed due to ' + status);
 					}
 						});
 				}
