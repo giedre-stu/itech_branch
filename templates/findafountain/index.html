@@ -83,7 +83,6 @@
 			  	var map, infoWindow, geoLocatorMarker, geoLocatorInfoWindow; 
 			  	var directionsService, directionsDisplay, control;
 
-
 			    var locations = [
 			      ['Main Building', 55.872084,  -4.288222, 1],
 			      ['Boyd Orr', 55.873504, -4.292795, 2]
@@ -133,7 +132,7 @@
 				    	control.style.display = 'block';
 					    map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
 			    	 
-				        calcRoute(directionsService, directionsDisplay);
+				        
 				       
 					    // adds markers to the map 
 					    var marker, i;
@@ -153,7 +152,9 @@
 						        }
 						      })(marker, i));
 						    }
-					} 
+
+					calcRoute(directionsService, directionsDisplay);
+				} 
 
 			   // if geolocation disabled 
 			  	function handleLocationError(browserHasGeolocation, geoLocatorInfoWindow, pos) {
@@ -201,7 +202,6 @@
 			    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALaN1AQdFvEnlLyNLdHUmYKSjX5C82B4I&callback=initMap">
 			    </script>
 
-	<div id="directionsPanel" style="float:right;width:30%;height 100%"></div>
 	</div>
 	
 	<div class="right">
