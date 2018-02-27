@@ -151,8 +151,8 @@
 
       			function calcRoute() {
 					  var request = {
-					    origin: pos,
-					    destination: new google.maps.LatLng(locations[0][1], locations[0][2]),
+					    origin: new google.maps.LatLng(locations[1][1], locations[1][2]),
+					    destination: new google.maps.LatLng(locations[1][1], locations[1][2]),
 					    travelMode: google.maps.TravelMode['WALKING']
 					  };
 					  directionsService.route(request, function(result, status) {
