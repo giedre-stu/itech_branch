@@ -48,7 +48,7 @@
 			    	  map = new google.maps.Map(document.getElementById('map'), {
 				      zoom: 16,
 				      center: new google.maps.LatLng(55.872084, -4.288222),
-				      mapTypeId: google.maps.MapTypeId.ROADMAP
+				      mapTypeId: google.maps.MapTypeId.HYBRID
 			    	  });
 			    	  geoLocatorInfoWindow = new google.maps.InfoWindow;
 
@@ -72,12 +72,14 @@
 				          handleLocationError(false, infoWindow, map.getCenter());
 				        }
 
+				       
 					    // adds markers to the map 
 					    var marker, i;
 					    for (i = 0; i < locations.length; i++) {  
 						      marker = new google.maps.Marker({
 						        position: new google.maps.LatLng(locations[i][1], locations[i][2]),
 						        map: map
+						        icon: markerSymbol('blue')
 						      });
 
 						      google.maps.event.addListener(marker, 'click', (function(marker, i) {
@@ -98,6 +100,17 @@
 	                              'Error: Your browser doesn\'t support geolocation.'); 
 	       			geoLocatorInfoWindow.open(map);
       			}
+
+      			function markerSymbol(color) {
+				    return {
+				        path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+				        fillColor: color,
+				        fillOpacity: 1,
+				        strokeColor: '#000',
+				        strokeWeight: 2,
+				        scale: 1
+    						};
+				}
 
 			  </script>
 
