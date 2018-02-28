@@ -133,17 +133,16 @@
 								  infowindow.setContent(locations[i][0]);
 								  infowindow.open(map, marker);
 
+								  var endPosition = {
+									  lat: locations[i][1],
+									  lat: locations[i][2]
+									};
+
+									// current location to a fountain 
+								  calcRoute(directionsService, directionsDisplay, endPosition);
 								}
 							  })(marker, i));
 							}
-
-					var endPosition = {
-									  lat: 55.872084,
-									  lng: -4.288222
-									};
-
-					// current location to a fountain 
-					calcRoute(directionsService, directionsDisplay, endPosition);
 				} 
 
 			   // if geolocation disabled 
