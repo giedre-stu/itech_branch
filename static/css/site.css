@@ -36,6 +36,16 @@ header {
   vertical-align: bottom;
 }
 
+.button {
+  background-color: #008CBA;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16 px;
+}
+
 .grid{
   display: grid;
   grid-gap: 50px 100px;
