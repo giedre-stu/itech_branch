@@ -10,10 +10,12 @@ from findafountain.models import Fountain
 
 def index(request):
 	print('hello')
-
 	fountain_list = Fountain.objects.filter() 
 	context_dict = {'fountains': fountain_list}
-
+	print('fountain list')
+	print (fountain_list)
+	print('context')
+	print(context_dict)
 	return render(request, 'findafountain/index.html', context_dict) 
 
 def about(request):
