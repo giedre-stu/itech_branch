@@ -155,7 +155,7 @@
 				function calcRoute(directionsService, directionsDisplay, startPoint, endPoint) {
 
 					var request = {
-						origin: new google.maps.LatLng(startPoint),
+						origin: startPoint,
 						destination: endPoint,
 						travelMode: 'WALKING'
 					};
