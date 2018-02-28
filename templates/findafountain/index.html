@@ -137,10 +137,13 @@
 							  })(marker, i));
 							}
 
-					var start = new google.maps.LatLng(currentPosition);
-					var end = new google.maps.LatLng(currentPosition);
+					var endPosition = {
+									  lat: 55.872084,
+									  lng: -4.288222
+									};
+
 					// current location to a fountain 
-					calcRoute(directionsService, directionsDisplay, start, end);
+					calcRoute(directionsService, directionsDisplay, endPosition);
 				} 
 
 			   // if geolocation disabled 
@@ -152,11 +155,11 @@
 					geoLocatorInfoWindow.open(map);
 				}
 
-				function calcRoute(directionsService, directionsDisplay, startPoint, endPoint) {
+				function calcRoute(directionsService, directionsDisplay, endPoint) {
 
 					var request = {
-						origin: 'glasgow, UK', 
-						destination: 'edinburgh, uk', 
+						origin: new google.maps.LatLng(currentPosition),
+						destination: new google.maps.LatLng(endPoint),
 						travelMode: 'WALKING'
 					};
 					
