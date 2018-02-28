@@ -135,7 +135,7 @@
 
 								  var lat = locations[i][1];
 								  var lng = locations[i][2];
-								  var endPosition = new google.maps.LatLng(lat.ToString().Replace(",", "."),lng.ToString().Replace(",", "."));
+								  var endPosition = new google.maps.LatLng(lat, lng);
 
 									// current location to a fountain 
 								  calcRoute(directionsService, directionsDisplay, endPosition);
