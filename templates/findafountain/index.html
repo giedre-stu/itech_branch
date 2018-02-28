@@ -133,10 +133,7 @@
 								  infowindow.setContent(locations[i][0]);
 								  infowindow.open(map, marker);
 
-								  var endPosition = {
-									  lat: locations[i][1],
-									  lat: locations[i][2]
-									};
+								  var endPosition new google.maps.LatLng(locations[i][1], locations[i][2]);
 
 									// current location to a fountain 
 								  calcRoute(directionsService, directionsDisplay, endPosition);
