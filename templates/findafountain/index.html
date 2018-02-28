@@ -5,7 +5,7 @@
 
 {% block title %}
 	<h1>Find a Fountain</h1>
-    <p class="lead"><b>Created by The Thirsty Pythons</b></p>
+	<p class="lead"><b>Created by The Thirsty Pythons</b></p>
 {% endblock %}
 
 
@@ -67,7 +67,7 @@
 		<b>Thirsty? You came to the right page! <br/> Click on any of the fountains to get directions or select another option below.</b> <br/>
 		<br/>  
 			
-			<button type="button" class="btn btn-primary" alt="Show all" align="left">
+			<button type="button" class="btn btn-primary" alt="Show all" align="left" onclick="loadAll()">
 				<b>Show all<b>
 			</button> 
 
@@ -83,7 +83,10 @@
 
 			<div id="map">
 			  <script type="text/javascript">
-				var map, currentPosition, infoWindow, geoLocatorMarker, geoLocatorInfoWindow;
+
+				var map, infoWindow; 
+				var geoLocatorMarker, geoLocatorInfoWindow;
+				var directionsService, directionsDisplay, currentPosition;
 
 				var locations = [
 				  ['Main Building', 55.872084,  -4.288222, 1],
@@ -94,101 +97,132 @@
 
 					  map = new google.maps.Map(document.getElementById('map'), {
 					  zoom: 16,
-					  styles: [
-    {
-        "featureType": "landscape.man_made",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color": "#faf5ed"
-            },
-            {
-                "lightness": "0"
-            },
-            {
-                "gamma": "1"
-            }
-        ]
-    },
-    {
-        "featureType": "poi.park",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#bae5a6"
-            }
-        ]
-    },
-    {
-        "featureType": "road",
-        "elementType": "all",
-        "stylers": [
-            {
-                "weight": "1.00"
-            },
-            {
-                "gamma": "1.8"
-            },
-            {
-                "saturation": "0"
-            }
-        ]
-    },
-    {
-        "featureType": "road",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "hue": "#ffb200"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "lightness": "0"
-            },
-            {
-                "gamma": "1"
-            }
-        ]
-    },
-    {
-        "featureType": "transit.station.airport",
-        "elementType": "all",
-        "stylers": [
-            {
-                "hue": "#b000ff"
-            },
-            {
-                "saturation": "23"
-            },
-            {
-                "lightness": "-4"
-            },
-            {
-                "gamma": "0.80"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color": "#a0daf2"
-            }
-        ]
-    }
-],
 					  center: new google.maps.LatLng(55.872084, -4.288222),
-					  mapTypeId: google.maps.MapTypeId.ROADMAP
+					  mapTypeId: google.maps.MapTypeId.ROADMAP,
+					  styles: [
+							{
+								"featureType": "landscape.man_made",
+								"elementType": "all",
+								"stylers": [
+									{
+										"color": "#faf5ed"
+									},
+									{
+										"lightness": "0"
+									},
+									{
+										"gamma": "1"
+									}
+								]
+							},
+							{
+								"featureType": "poi.park",
+								"elementType": "geometry.fill",
+								"stylers": [
+									{
+										"color": "#bae5a6"
+									}
+								]
+							},
+							{
+								"featureType": "road",
+								"elementType": "all",
+								"stylers": [
+									{
+										"weight": "1.00"
+									},
+									{
+										"gamma": "1.8"
+									},
+									{
+										"saturation": "0"
+									}
+								]
+							},
+							{
+								"featureType": "road",
+								"elementType": "geometry.fill",
+								"stylers": [
+									{
+										"hue": "#ffb200"
+									}
+								]
+							},
+							{
+								"featureType": "road.arterial",
+								"elementType": "geometry.fill",
+								"stylers": [
+									{
+										"lightness": "0"
+									},
+									{
+										"gamma": "1"
+									}
+								]
+							},
+							{
+								"featureType": "transit.station.airport",
+								"elementType": "all",
+								"stylers": [
+									{
+										"hue": "#b000ff"
+									},
+									{
+										"saturation": "23"
+									},
+									{
+										"lightness": "-4"
+									},
+									{
+										"gamma": "0.80"
+									}
+								]
+							},
+							{
+								"featureType": "water",
+								"elementType": "all",
+								"stylers": [
+									{
+										"color": "#a0daf2"
+									}
+								]
+							}
+						]
 					  });
 
-						var directionsService = new google.maps.DirectionsService();
-						var directionsDisplay = new google.maps.DirectionsRenderer();
+					 loadALl();
+					 locateUser(); 		
+				} 
+
+				function loadAll()
+				{
+					var marker, i;
+						var infowindow = new google.maps.InfoWindow;
+						for (i = 0; i < locations.length; i++) {  
+							  marker = new google.maps.Marker({
+								position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+								map: map,
+								icon: markerSymbol('deepskyblue')
+							  });
+
+							  google.maps.event.addListener(marker, 'click', (function(marker, i) {
+								return function() {
+								  infowindow.setContent(locations[i][0]);
+								  infowindow.open(map, marker);
+
+								  var endPosition = locations[i]; 
+
+									// current location to a fountain 
+								  calcRoute(directionsService, directionsDisplay, endPosition);
+								}
+							  })(marker, i));
+							}
+				}
+
+				function locateUser() 
+				{
+						directionsService = new google.maps.DirectionsService();
+						directionsDisplay = new google.maps.DirectionsRenderer();
 						directionsDisplay.setMap(map);
 
 						geoLocatorInfoWindow = new google.maps.InfoWindow;
@@ -216,37 +250,7 @@
 							  // Browser doesn't support Geolocation
 							  handleLocationError(false, infoWindow, map.getCenter());
 						}
-
-						// directions service objects
-						//control = document.getElementById('floating-panel');
-						
-						//control.style.display = 'block';
-					   // map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
-					 
-
-						// adds markers to the map 
-						var marker, i;
-						var infowindow = new google.maps.InfoWindow;
-						for (i = 0; i < locations.length; i++) {  
-							  marker = new google.maps.Marker({
-								position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-								map: map,
-								icon: markerSymbol('deepskyblue')
-							  });
-
-							  google.maps.event.addListener(marker, 'click', (function(marker, i) {
-								return function() {
-								  infowindow.setContent(locations[i][0]);
-								  infowindow.open(map, marker);
-
-								  var endPosition = locations[i]; 
-
-									// current location to a fountain 
-								  calcRoute(directionsService, directionsDisplay, endPosition);
-								}
-							  })(marker, i));
-							}
-				} 
+				}
 
 			   // if geolocation disabled 
 				function handleLocationError(browserHasGeolocation, geoLocatorInfoWindow, pos) {
