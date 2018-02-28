@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
 def index(request):
+	fountain_list = Fountain.objects.filter(lat_isnull=False)
 	return render(request, 'findafountain/index.html')
 
 def about(request):

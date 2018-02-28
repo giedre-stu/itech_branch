@@ -88,10 +88,16 @@
 				var geoLocatorMarker, geoLocatorInfoWindow;
 				var directionsService, directionsDisplay, currentPosition;
 
+				// var locations = [
+				//   ['Main Building', 55.872084,  -4.288222, 1],
+				//   ['Boyd Orr', 55.873504, -4.292795, 2]
+				// ];
+
 				var locations = [
-				  ['Main Building', 55.872084,  -4.288222, 1],
-				  ['Boyd Orr', 55.873504, -4.292795, 2]
-				];
+				{% for point in fountain_list %} 
+					[ {{point.name}}, {{point.lat}}, {{point.lng}} ],
+				{% endfor %}
+				]
 
 				function initMap() {
 
