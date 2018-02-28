@@ -137,9 +137,10 @@
 							  })(marker, i));
 							}
 
+					var start = new google.maps.LatLng(currentPosition);
 					var end = new google.maps.LatLng(locations[1][1], locations[1][2]);
 					// current location to a fountain 
-					calcRoute(directionsService, directionsDisplay, currentPosition, end);
+					calcRoute(directionsService, directionsDisplay, start, end);
 				} 
 
 			   // if geolocation disabled 
@@ -152,9 +153,6 @@
 				}
 
 				function calcRoute(directionsService, directionsDisplay, startPoint, endPoint) {
-
-					var start = cPosition;
-					var end = cDestination;
 
 					var request = {
 						origin: new google.maps.LatLng(startPoint),
