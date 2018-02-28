@@ -137,7 +137,7 @@
 							  })(marker, i));
 							}
 
-					var start = new google.maps.LatLng(currentPosition);
+					var start = new google.maps.LatLng(locations[0][1], locations[0][2]);
 					var end = new google.maps.LatLng(locations[1][1], locations[1][2]);
 					// current location to a fountain 
 					calcRoute(directionsService, directionsDisplay, start, end);
@@ -166,7 +166,6 @@
 					directionsDisplay.setDirections(result);
 					} else {
 					directionsDisplay.setOptions({ preserveViewport: true });
-					directionsDisplay.setContent('Directions request failed due to ' + status);
 					}
 						});
 				}
