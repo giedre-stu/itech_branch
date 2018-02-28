@@ -94,10 +94,18 @@
 				// ];
 
 				var locations = [
-				{% for point in fountain_list %} 
-					[ {{point.name}}, {{point.lat}}, {{point.lng}} ],
+
+				{% for fountain in fountains %}
+
+				['{{fountain.name}}',
+				{{fountain.lat}},
+				{{fountain.lng}}],
+
 				{% endfor %}
-				]
+				];
+
+				console.log(locations);
+				console.log(locations.toString());
 
 				function initMap() {
 
