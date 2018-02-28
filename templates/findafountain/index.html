@@ -155,9 +155,9 @@
 				function calcRoute(directionsService, directionsDisplay, startPoint, endPoint) {
 
 					var request = {
-						origin = startPoint, 
-						destination = endPoint, 
-						travelMode: 'TRANSIT'
+						origin: 'glasgow, UK', 
+						destination: endPoint, 
+						travelMode: 'WALKING'
 					};
 					
 					directionsService.route(request, function (result, status) {
