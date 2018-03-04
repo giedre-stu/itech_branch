@@ -8,85 +8,75 @@
 	<p class="lead"><b>Created by The Thirsty Pythons</b></p>
 {% endblock %}
 
-
 {% block content %}
 
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-<script type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'js/markerclusterer/src/markerclusterer.js' %}" ></script> 
 
 <style>
  #map {
-	   width: 700px;
-	   height: 500px;
-	 }
-
-	 #floating-panel {
-		position: absolute;
-		top: 10px;
-		left: 25%;
-		z-index: 5;
-		background-color: yellow;
-		padding: 5px;
-		border: 1px solid #999;
-		text-align: center;
-		font-family: 'Roboto','sans-serif';
-		line-height: 30px;
-		padding-left: 10px;
-		background: #fff;
-		padding: 5px;
-		font-size: 14px;
-		font-family: Arial;
-		border: 1px solid #ccc;
-		box-shadow: 0 2px 2px rgba(33, 33, 33, 0.4);
-		display: none;
-	 }
-
-	 #right-panel {
-		font-family: 'Roboto','sans-serif';
-		font-size: 14px;
-		line-height: 30px;
-		background-color: white;
-		width: 200px;
-		height: 500px;
-		float: right;
-		overflow: hidden;
+	   width: 100%;
+	   height: 100%;
 	 }
 </style>
 
-<div class = "gridtwo">	
-	<div class = "left" style="width:400px">
-		<h4><b>Found a Fountain?</b></h4>
-		<b>Signup and submit via the <a href = "{% url 'contact' %}" > Submit </a> page.</b> </br>
-		<img src = "{% static 'img/libraryfountain.jpg' %}" alt = "Image of Library Fountain" style ="width:300px;height:400px;"><br />
-		<b>Fountain of the Week:</b>
-		Congratulations to the Library 4th floor fountain.
+<div class = "container-fluid">
+	<div class = "row">
+
+		<div class = "col-sm">
+		<h4><b><br/>Found a Fountain?</b></h4>
+		<b>Signup and submit via the <a href = "{% url 'contact' %}" > Submit </a> page.</b>  <hr>
+
+		<img src = "{% static 'img/libraryfountain.jpg' %}" alt = "Image of Library Fountain" style ="width:300px;height:400px;"><br /><hr>
+		<b>Fountain of the Week:</b><br/>
+		Congratulations to the Library 4th floor fountain. 
 		Voted: Most clean, Best stocked, and Easiest to Find
-	</div>
+		</div>
 
-	<div class = "center2">
-		<b>Thirsty? You came to the right page! <br/> Click on any of the fountains to get directions or select another option below.</b> <br/>
-		<br/>  
-			
-			<button type="button" class="btn btn-primary" alt="Show all" align="left" onclick="loadAll()">
-				<b>Show all<b>
+		<div class="col-6">
+
+		<br/>  	
+			<button type="button" class="btn-custom" alt="Show all" align="center" onclick="showAllMarkers()">
+				<b>Show all</b>
 			</button> 
 
-			<button type="button" class="btn btn-primary" alt="Search by keyword:" align="center">
-				<b>Search by keyword:<b>  
-			</button> 
-
-			<button type="button" class="btn btn-primary" alt="Show nearest" align="right">
+			<button type="button" class="btn-custom" alt="Find nearest" align="centert" onclick="findNearest()">
 				<b>Show nearest<b>  
+	 		</button> 
+
+			<button type="button" class="btn-custom" alt="Search: " align="center">
+				
+				<b>Building: </b> 
+					<select id ="Building" class ="btn-basic" onchange="sortMarkers(), enableFloor()">
+						<option value="all">All</option>
+						{% for fountain in fountains %}
+						{% if fountain.building %}
+						<option value="{{fountain.building}}">{{fountain.building}}</option>
+						{% endif %}
+						{% endfor %}
+					</select>
+				 
+
+				<b>Floor: </b>
+					<select id ="Floor" class ="btn-basic" onchange="sortMarkers()">
+						<option value="all">All</option>
+						{% for floor in floors %}
+						{% if floor.floor %}
+						<option value="{{floor.floor}}">{{floor.floor}}</option>
+						{% endif %}
+						{% endfor %}
+					</select>
 			</button> 
 
 			<br/><br/>
-
 			<div id="map">
 			  <script type="text/javascript">
 
-				var map, infoWindow; 
+			  	// var building, floor; 
+				var map, infowindow, markers, infoWindows; 
 				var geoLocatorMarker, geoLocatorInfoWindow;
-				var directionsService, directionsDisplay, currentPosition;
+				var directionsService, directionsDisplay, currentLat, currentLng, currentPosition, pos;
+				var campus; 
 
 				// var locations = [
 				//   ['Main Building', 55.872084,  -4.288222, 1],
@@ -99,19 +89,32 @@
 
 				['{{fountain.name}}',
 				{{fountain.lat}},
-				{{fountain.lng}}],
+				{{fountain.lng}}, 
+				'{{fountain.image}}',
+				'{{fountain.description}}',
+				{{fountain.floor}},
+				{{fountain.reviews}},
+				{{fountain.rating}},
+				{{fountain.numberratings}},
+				{{fountain.avgrating}},
+				{{fountain.popularity}},
+				'{{fountain.broken}}',
+				'{{fountain.building}}',
+				{{fountain.id}}
+				],
+
+
 
 				{% endfor %}
 				];
 
-				console.log(locations);
-				console.log(locations.toString());
+				enableFloor(); 
 
 				function initMap() {
 
 					  map = new google.maps.Map(document.getElementById('map'), {
-					  zoom: 16,
-					  center: new google.maps.LatLng(55.872084, -4.288222),
+					 // zoom: 16,
+					  center: new google.maps.LatLng(55.872084,-4.288222),
 					  mapTypeId: google.maps.MapTypeId.ROADMAP,
 					  styles: [
 							{
@@ -204,78 +207,219 @@
 						]
 					  });
 
+					 campus  = new google.maps.LatLng(55.872084,-4.288222);
+
+					 directionsDisplay = new google.maps.DirectionsRenderer();
+					 directionsService = new google.maps.DirectionsService();
+					
+					 geoLocatorInfoWindow = new google.maps.InfoWindow;
+					 geoLocatorMarker = new google.maps.Marker({map: map});
+
 					 locateUser(); 
-					 loadAll();		
+					 loadAll();
+					 showGreeting();
 				} 
 
 				function loadAll()
-				{
+				{	
 					var marker, i;
-						var infowindow = new google.maps.InfoWindow;
-						for (i = 0; i < locations.length; i++) {  
-							  marker = new google.maps.Marker({
+
+					markers = [];
+					infoWindows = [];
+
+					infowindow = new google.maps.InfoWindow({
+							maxWidth: 200
+					});
+
+					infoWindows.push(infowindow);
+					infoWindows.push(geoLocatorInfoWindow);
+
+					for (i = 0; i < locations.length; i++) {  
+							   	marker = new google.maps.Marker({
 								position: new google.maps.LatLng(locations[i][1], locations[i][2]),
 								map: map,
-								icon: markerSymbol('deepskyblue')
-							  });
-
+								building: locations[i][12],
+								floor: locations[i][5],
+								icon: {url: "{% static 'img/icon.svg' %}",
+								scaledSize: new google.maps.Size(60, 50)},
+								visible: true
+							  }); 
+							 
 							  google.maps.event.addListener(marker, 'click', (function(marker, i) {
 								return function() {
-								  infowindow.setContent(locations[i][0]);
-								  infowindow.open(map, marker);
 
-								  var endPosition = locations[i]; 
+								clearInfoWindows(); 
+
+								infowindow.setContent(
+								  	"<h4>" + locations[i][0] + "</h4><br/>" + // name  
+								  	"<img width='150' src='" + "{{ MEDIA_URL}}" + locations[i][3] + "'" + "/><hr>" + 
+								  	locations[i][4] + "<br/></br>" + // description
+								  	"<b>Building: </b>" + locations[i][12] + "</br>" +
+								  	"<b>Floor: </b>" + locations[i][5] + "</br> "+ 
+								  	"<b>Rating: </b>" + locations[i][9] + "</br>" + 
+								  	"<b>Broken? </b>" + locations[i][11] + "</br></br>" +
+								  	"<b>Visit the " + "<a href ='/fountain/"+locations[i][13]+"'> fountain page</a> to see the reviews or rate this fountain!</b>"
+								  	);
+								 infowindow.open(map, marker);
+
+								 var endPosition = locations[i]; 
 
 									// current location to a fountain 
+								  
 								  calcRoute(directionsService, directionsDisplay, endPosition);
 								}
 							  })(marker, i));
+
+							  markers.push(marker);
 							}
+
+					var markerCluster = new MarkerClusterer(map, markers, {imagePath: "{% static 'js/markerclusterer/images/m' %}"});
+
+					setBounds();	
 				}
 
-				function locateUser() 
-				{
-						directionsService = new google.maps.DirectionsService();
-						directionsDisplay = new google.maps.DirectionsRenderer();
-						directionsDisplay.setMap(map);
+				function clearMarkers() {
+					for (var i = 0; i < markers.length; i++) {
+         			 markers[i].setVisible(false);
+       				 }
+				}
 
-						geoLocatorInfoWindow = new google.maps.InfoWindow;
+				function clearInfoWindows() {
+					for (var i = 0; i < infoWindows.length; i++) {
+         			 infoWindows[i].close();
+       				 }
+
+				}
+
+				function showAllMarkers(){		
+					clearInfoWindows(); 
+
+					for (var i = 0; i < markers.length; i++) {
+         			 markers[i].setVisible(true);
+       				 }
+       				setBounds();
+				}
+
+				function sortMarkers() {
+					showBuilding = document.getElementById("Building").value;
+					showFloor = document.getElementById("Floor").value;
+					
+					console.log(showBuilding);
+					console.log(showFloor);
+
+					clearMarkers();
+					clearInfoWindows(); 
+
+					if (showBuilding == "all"){
+						showAllMarkers(); 
+					}
+
+					else if (showFloor == "all") {
+						var i;
+						for (i = 0; i < markers.length; i++) {
+							if (markers[i].building == showBuilding) {
+								markers[i].setVisible(true);
+								map.setCenter(markers[i].getPosition());
+								map.setZoom(17); 
+							} 
+						}
+					}
+					
+					else {
+						var i;
+						var f = false; 
+						for (i = 0; i < markers.length; i++) {
+							if (markers[i].building == showBuilding){
+								if (markers[i].floor == showFloor){
+									markers[i].setVisible(true);
+									map.setCenter(markers[i].getPosition());
+									map.setZoom(17);
+									f = true;
+								}
+							} 	
+						}
+						
+						if (f == false) {
+							setBounds(); 
+							geoLocatorInfoWindow.setPosition(campus);
+							geoLocatorInfoWindow.setContent("Sorry, couldn't locate any fountains! </br></br> Try selecting a different floor or a building."); 
+							geoLocatorInfoWindow.open(map);
+						}
+					}
+
+				}
+
+				function findNearest()
+				{	
+					var pi = Math.PI;
+				    var R = 6371; //equatorial radius
+				    var distances = [];
+				    var closest = -1;
+
+				    for( i=0;i<markers.length; i++ ) {  
+				        var lat2 = markers[i].position.lat();
+				        var lon2 = markers[i].position.lng();
+
+				        var chLat = lat2-currentLat;
+				        var chLon = lon2-currentLng;
+
+				        var dLat = chLat*(pi/180);
+				        var dLon = chLon*(pi/180);
+
+				        var rLat1 = currentLat*(pi/180);
+				        var rLat2 = lat2*(pi/180);
+
+				        var a = Math.sin(dLat/2) * Math.sin(dLat/2) + 
+				                    Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(rLat1) * Math.cos(rLat2); 
+				        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+				        var d = R * c;
+
+				        distances[i] = d;
+				        if ( closest == -1 || d < distances[closest] ) {
+				            closest = i;
+				        }
+ 
+					    clearMarkers();
+					    markers[closest].visible = true;
+					    var endPosition = locations[closest]; 
+
+					    google.maps.event.trigger(markers[closest], 'click');
+					}
+				}
+   
+				function locateUser() 
+				{		
 						// Try HTML5 geolocation.
 							if (navigator.geolocation) {
+
 								  navigator.geolocation.getCurrentPosition(function(position) {
 									currentPosition = {
 									  lat: position.coords.latitude,
 									  lng: position.coords.longitude
 									};
 
-									geoLocatorMarker = new google.maps.Marker({
-									position: new google.maps.LatLng(currentPosition),
-									map: map,
-								  });
+									currentLat = position.coords.latitude;
+									currentLng = position.coords.longitude;
+									pos = new google.maps.LatLng(currentPosition);
 									
-									geoLocatorInfoWindow.setContent('You are here');
+									geoLocatorMarker.setPosition(pos);
+									geoLocatorInfoWindow.setContent('Your location');
 									geoLocatorInfoWindow.open(map, geoLocatorMarker);
-									map.setCenter(currentPosition);
+
+									setBounds();
 
 								}, function() {
-								handleLocationError(true, infoWindow, map.getCenter());
+								handleLocationError(true, infoWindow);
 								});
 							} else {
 							  // Browser doesn't support Geolocation
-							  handleLocationError(false, infoWindow, map.getCenter());
+							  handleLocationError(false, infoWindow);
 						}
 				}
 
-			   // if geolocation disabled 
-				function handleLocationError(browserHasGeolocation, geoLocatorInfoWindow, pos) {
-					geoLocatorInfoWindow.setPosition(pos);
-					geoLocatorInfoWindow.setContent(browserHasGeolocation ?
-								  'Error: The Geolocation service failed.' :
-								  'Error: Your browser doesn\'t support geolocation.'); 
-					geoLocatorInfoWindow.open(map);
-				}
-
 				function calcRoute(directionsService, directionsDisplay, endPoint) {
+					
+					directionsDisplay.setMap(map);
 
 					var lat1 = endPoint[1];
 					var lng1 = endPoint[2];
@@ -294,18 +438,47 @@
 					directionsDisplay.setOptions({ preserveViewport: true });
 					}
 						});
+
+					map.setZoom(17);
+					map.setCenter(new google.maps.LatLng(lat1,lng1));
+
 				}
 
-				function markerSymbol(color) {
-					return {
-						path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
-						fillColor: color,
-						fillOpacity: 1,
-						strokeColor: '#000',
-						strokeWeight: 2,
-						scale: 1
-							};
+				function setBounds() {
+					var bounds = new google.maps.LatLngBounds();
+					for (var i =0; i<markers.length; i++) {
+						bounds.extend(markers[i].getPosition());
+					}
+					map.fitBounds(bounds);
 				}
+
+				function enableFloor(){
+					if (document.getElementById("Building").value == "all") {
+						document.getElementById("Floor").disabled=true;
+					}else{
+						document.getElementById("Floor").disabled=false;
+					}
+				}
+
+				function showGreeting(){
+					var infowindow2 = new google.maps.InfoWindow({
+							maxWidth: 200});
+					infowindow2.setPosition(campus);
+					infowindow2.setContent("<h5>Welcome to<h5>Find A Fountain!</h5><hr><font size='3'>Select one of the options above or click on any of the fountains to get directions, rate a fountain, leave a review, and more. <hr> Just keep in mind that location services are needed to fully enjoy this site.</font>");
+					infowindow2.open(map);
+				}
+
+				// if geolocation disabled 
+				function handleLocationError(browserHasGeolocation, geoLocatorInfoWindow) {
+					
+					geoLocatorInfoWindow.setPosition(campus);
+					geoLocatorInfoWindow.setContent(browserHasGeolocation ?
+								  'Error: The Geolocation service failed.' :
+								  'Error: Your browser doesn\'t support geolocation.'); 
+					geoLocatorInfoWindow.open(map);
+				}
+
+
 
 			  </script>
 
@@ -313,11 +486,11 @@
 				src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALaN1AQdFvEnlLyNLdHUmYKSjX5C82B4I&callback=initMap">
 			 </script>
 		</div>
-	</div>
 
-	<div class="right">
-		<a class="twitter-timeline" data-width="300" data-height="600" href="https://twitter.com/fountain_finder?ref_src=twsrc%5Etfw">Tweets by fountain_finder</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 	</div>
+		<div class = "col-sm2">
+		<a class="twitter-timeline" data-width="300" data-height="700" href="https://twitter.com/fountain_finder?ref_src=twsrc%5Etfw">Tweets by fountain_finder</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+		</div>
 
 </div>
 
